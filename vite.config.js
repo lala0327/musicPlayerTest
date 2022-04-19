@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  const base = command === 'build' ? '/pwa-vite/' : '/';
+  const base = command === 'build' && mode === 'production' ? '/pwa-vite/' : '/';
 
   return {
     base: base,
@@ -17,6 +17,9 @@ export default defineConfig(({ command, mode }) => {
         filename: "sw.js",
         includeAssets: ["/favicon.ico"],
         strategies: "injectManifest",
+        injectManifest: {
+          globPatterns: ['**/*.{js,css,html,png}'],
+        },
         manifest: {
           name: "PWA_Vite_Tailwind",
           short_name: "PWA模板",
