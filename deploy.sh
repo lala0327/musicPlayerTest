@@ -17,4 +17,5 @@ git commit -m 'deploy'
 git push -f git@github.com:lala0327/pwaTest.git main:gh-pages
 # if you are deploying to https://<USERNAME>.github.io
 # git push -f git@github.com:<USERNAME>/<USERNAME>.github.io.git main
-cd -
+cd ..
+rm -rf dist

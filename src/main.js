@@ -1,5 +1,10 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import '../index.css';
+import router from './router';
 
-createApp(App).mount('#app')
+import { library } from '@fortawesome/fontawesome-svg-core'
+import {fas} from '@fortawesome/free-solid-svg-icons'
+library.add(fas)
+
+createApp(App).use(router).mount('#app')

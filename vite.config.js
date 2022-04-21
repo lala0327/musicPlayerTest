@@ -4,7 +4,7 @@ import { VitePWA } from "vite-plugin-pwa"
 
 // https://vitejs.dev/config/
 export default defineConfig(({ command, mode }) => {
-  const base = command === 'build' && mode === 'production' ? '/pwa-vite/' : '/';
+  const base = command === 'build' && mode === 'production' ? '/pwaTest/' : '/';
 
   return {
     base: base,
