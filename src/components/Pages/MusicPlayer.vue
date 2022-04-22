@@ -1,31 +1,127 @@
 <template>
   <div class="w-screen h-screen flex justify-center items-center flex-col">
-    <div class="w-full h-full">
+    <audio controls :ontimeupdate="changeTimelinePosition" :oncanplay="canplay">
+      <source type="audio/mpeg" />
+    </audio>
+    {{ play }}
+    <div class="w-full h-full relative overflow-hidden">
       <!-- 上方背景圖 -->
-      <div class="w-full h-2/3">
+      <div
+        class="
+          w-full
+          h-full
+          relative
+          bg-cover bg-no-repeat bg-center bg-[url('src/assets/img/flower.png')]
+        "
+      >
+        <!-- 白框 -->
+        <div v-if="!openModal" class="w-full h-[calc(100%-230px)] absolute p-8">
+          <div
+            class="w-full h-full border-white border-[10px] drop-shadow-xl"
+          />
+        </div>
+      </div>
+      <!-- 音樂列表 -->
+      <div
+        class="list w-full h-full pt-10 bg-[rgba(255,255,255,0.3)] absolute"
+        :class="openModal ? 'top-0' : 'top-full'"
+      >
+        <div class="w-full h-[calc(100%-40px)]">
+          <!-- tour -->
+          <div class="h-16 flex justify-around items-center">
+            <img
+              v-if="!shuffle"
+              src="..\..\assets\icons\btn_back.svg"
+              class="h-16 cursor-pointer"
+              @click="openModal = false"
+            />
+            <p
+              class="
+                text-white text-3xl
+                font-black
+                drop-shadow-[0_5px_5px_rgba(0,0,0,0.4)]
+              "
+            >
+              PLAYLIST
+            </p>
+            <img
+              v-if="!shuffle"
+              src="src\assets\icons\btn_more.svg"
+              class="h-16 border-white cursor-pointer"
+            />
+          </div>
+          <!-- list -->
+          <div class="listcss w-full h-[calc(100%-25px)] overflow-auto pt-8">
+            <div
+              v-for="music in MusicArr"
+              :key="music"
+              class="flex justify-center items-center flex-col cursor-pointer"
+              :class="
+                music.player
+                  ? 'bg-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.2)]'
+                  : ''
+              "
+            >
+              <div class="w-11/12 h-16 flex justify-between items-center">
+                <div>
+                  <p
+                    class="name text-lg font-bold"
+                    :class="
+                      music.player ? 'text-black' : 'text-[rgb(140,140,140)]'
+                    "
+                  >
+                    {{ music.name }}
+                  </p>
+                  <p class="text-sm text-[rgb(140,140,140)]">
+                    {{ music.singer }}
+                  </p>
+                </div>
+                <img
+                  v-if="!music.player"
+                  src="src\assets\icons\btn_small_play.svg"
+                  class="h-16 cursor-pointer"
+                />
+                <img
+                  v-else
+                  src="src\assets\icons\btn_small_pause.svg"
+                  class="h-16 cursor-pointer"
+                />
+              </div>
+              <hr
+                v-if="!music.player"
+                class="w-11/12 border-1/2 border-[rgba(140,140,140,0.5)]"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        v-if="!openModal"
+        class="
+          w-full
+          flex
+          justify-center
+          items-center
+          bottom-0
+          bg-white
+          flex-col
+          absolute
+          pb-5
+        "
+      >
+        <!-- 音樂播放頁面 -->
         <div
           class="
             w-full
-            h-full
+            text-center
+            flex
+            justify-center
+            items-center
+            flex-col
             relative
-            bg-cover
-            bg-no-repeat
-            bg-center
-            bg-[url('src/assets/img/flower.png')]
           "
         >
-          <div
-            class="
-              absolute
-              w-4/5
-              h-3/4
-              border-white border-[10px]
-              drop-shadow-xl
-              left-1/2
-              top-1/2
-              -translate-x-1/2 -translate-y-1/2
-            "
-          />
+          <!-- 漸層 -->
           <div
             class="
               w-full
@@ -34,29 +130,16 @@
               from-[rgba(255,255,255,1)]
               to-[rgba(255,255,255,0)]
               absolute
-              bottom-0
+              -top-10
             "
           />
-        </div>
-      </div>
-      <!-- 下方音樂資訊 -->
-      <div class="w-full flex justify-center items-center flex-col relative">
-        <div
-          class="
-            w-full
-            absolute
-            -top-5
-            text-center
-            flex
-            justify-center
-            items-center
-            flex-col
-          "
-        >
-          <div class="text-2xl font-bold cursor-pointer" @click="openModal">
-            {{ MusicArr[0].name }}
+          <div
+            class="text-2xl font-bold cursor-pointer absolute -top-8"
+            @click="openModal = true"
+          >
+            {{ MusicArr[index].name }}
           </div>
-          <div class="my-1">{{ MusicArr[0].singer }}</div>
+          <div class="my-1">{{ MusicArr[index].singer }}</div>
           <input
             type="range"
             id="volume"
@@ -71,7 +154,8 @@
           </div>
 
           <!-- 播放控制 -->
-          <div class="w-10/12 flex justify-between items-center">
+          <div class="w-10/12 flex justify-evenly items-center">
+            <!-- 隨機播放 -->
             <button type="button" @click="shuffle = !shuffle">
               <img
                 v-if="!shuffle"
@@ -82,16 +166,20 @@
                 src="src\assets\icons\btn_ShufflePlayback-black.svg"
               />
             </button>
-            <button type="button" class="">
+            <!-- 上一首 -->
+            <button type="button" @click="ChangeSong(false, index)">
               <img src="src\assets\icons\btn_Rewind.svg" />
             </button>
+            <!-- 播放/暫停 -->
             <button type="button" @click="ControlPlayer">
               <img v-if="!play" src="src/assets/icons/btn_Play.svg" />
               <img v-else src="src/assets/icons/btn_pause.svg" />
             </button>
-            <button type="button" class="">
+            <!-- 下一首 -->
+            <button type="button" @click="ChangeSong(true, index)">
               <img src="src\assets\icons\btn_Fast.svg" />
             </button>
+            <!-- 循環播放 -->
             <button type="button" @click="ControlRepeat">
               <img
                 v-if="repeat === 0"
@@ -109,10 +197,6 @@
           </div>
         </div>
       </div>
-
-      <audio controls class="hidden" :ontimeupdate="changeTimelinePosition">
-        <source src="src/assets/mp3/Knocking Knocking.mp3" type="audio/mpeg" />
-      </audio>
     </div>
   </div>
 </template>
@@ -120,6 +204,18 @@
 const MusicArr = [
   {
     name: "Knocking Knocking",
+    singer: "The Rampage",
+    src: "src/assets/mp3/Knocking Knocking.mp3",
+    player: false,
+  },
+  {
+    name: "One in a Million",
+    singer: "GENERATIONS",
+    src: "src/assets/mp3/One in a Million.mp3",
+    player: false,
+  },
+  {
+    name: "2",
     singer: "The Rampage",
     src: "src/assets/mp3/Knocking Knocking.mp3",
     player: false,
@@ -133,22 +229,56 @@ export default {
   components: {},
   data() {
     return {
+      index: 0,
       play: false,
       shuffle: false,
       repeat: 0,
+      openModal: false,
     };
   },
-  mounted() {},
+  mounted() {
+    const audio = document.querySelector("audio");
+    audio.src = this.MusicArr[this.index].src;
+  },
   methods: {
+    canplay() {
+      //預設音樂時長
+      const audio = document.querySelector("audio");
+      const start = document.getElementById("start");
+      const end = document.getElementById("end");
+      start.innerHTML = this.timeToMinute(audio.currentTime);
+      end.innerHTML = this.timeToMinute(audio.duration);
+    },
     ControlPlayer() {
       const audio = document.querySelector("audio");
       if (audio.paused) {
         this.play = true;
         audio.play();
+        this.MusicArr[this.index].player = true;
       } else {
         this.play = false;
         audio.pause();
       }
+    },
+    ChangeSong(bool, index) {
+      const audio = document.querySelector("audio");
+      this.MusicArr[index].player = false;
+      if (bool === true) {
+        index += 1;
+        if (index === this.MusicArr.length) {
+          index = 0;
+        }
+      } else {
+        if (index === 0) {
+          index = this.MusicArr.length - 1;
+        } else {
+          index -= 1;
+        }
+      }
+      this.index = index;
+      audio.src = this.MusicArr[this.index].src;
+      //點
+      this.ControlPlayer();
     },
     ControlRepeat() {
       this.repeat += 1;
@@ -156,17 +286,16 @@ export default {
         this.repeat = 0;
       }
     },
+    timeToMinute(times) {
+      var s = parseInt(parseInt(times) / 60);
+      var m = parseInt(parseInt(times) % 60);
+      if (m < 10) {
+        m = "0" + m;
+      }
+      var length = "0" + s + ":" + m;
+      return length;
+    },
     changeTimelinePosition() {
-      const timeToMinute = function (times) {
-        const time = parseInt(times);
-        var a = parseInt(time / 60);
-        var b = parseInt(time % 60);
-        if (b < 10) {
-          b = "0" + b;
-        }
-        var c = "0" + a + ":" + b;
-        return c;
-      };
       const audio = document.querySelector("audio");
       const timeline = document.querySelector(".timeline");
       // 百分比計算音樂的進度
@@ -175,9 +304,7 @@ export default {
       timeline.value = percentagePosition;
       //變動歌曲時間文字
       const start = document.getElementById("start");
-      const end = document.getElementById("end");
-      start.innerHTML = timeToMinute(audio.currentTime);
-      end.innerHTML = timeToMinute(audio.duration);
+      start.innerHTML = this.timeToMinute(audio.currentTime);
     },
     //更改事件
     changeTrack() {
@@ -186,7 +313,6 @@ export default {
       const time = (timeline.value * audio.duration) / 100;
       audio.currentTime = time;
     },
-    openModal() {},
   },
 };
 </script>
@@ -219,5 +345,14 @@ export default {
   margin-top: -8px;
   border-image: linear-gradient(black, black) 0 fill / 8 20 8 0 / 0px 0px 0
     2000px;
+}
+.listcss {
+  background: rgb(255, 255, 255);
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    rgba(255, 255, 255, 0.8) 15%,
+    rgba(255, 255, 255, 0.8) 100%
+  );
 }
 </style>
