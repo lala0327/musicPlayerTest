@@ -4,10 +4,10 @@ const routes = [
     {
         path: '/',
         name: 'MusicPlayer',
-        component: () => import("./components/Pages/MusicPlayer.vue")
-    }, ]
+        component: () => import("./components/Home.vue")
+    },]
 const router = createRouter({
-    history: createWebHistory(''),
+    history: createWebHistory(import.meta.env.BASE_URL),
     routes,
 })
 export default router;
