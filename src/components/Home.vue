@@ -4,7 +4,7 @@
       <!-- 上方背景圖 -->
       <div
         v-if="musicArr[index]"
-        class="w-full h-full relative bg-cover bg-no-repeat bg-center blur-sm"
+        class="w-full h-full relative bg-cover bg-no-repeat bg-center blur-md"
         :style="{
           backgroundImage: 'url(' + musicArr[index].png + ')',
         }"

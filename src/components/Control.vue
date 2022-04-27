@@ -177,13 +177,15 @@ export default {
         this.setPlay(true);
       } else {
         if (this.shuffle === true) {
-          var arr = [];
-          for (let i = 0; i <= this.musicArr.length - 1; i++) {
-            arr.push(i);
+          if (this.musicArr.length === 1) {
+            const arrIndex = Math.floor(Math.random() * this.musicArr.length);
+            while (arrIndex === this.index) {
+              const arrIndex = Math.floor(Math.random() * this.musicArr.length);
+            }
+            this.setIndex(arrIndex);
+          } else {
+            this.setIndex(this.index);
           }
-          arr.splice(this.index, 1);
-          const arrIndex = Math.floor(Math.random() * arr.length);
-          this.setIndex(arr[arrIndex]);
         } else {
           this.index += 1;
           if (this.index === this.musicArr.length) {

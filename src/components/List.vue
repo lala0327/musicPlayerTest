@@ -29,23 +29,12 @@
           v-for="(music, i) in musicArr"
           :key="i"
           class="flex justify-center items-center flex-col cursor-pointer"
-          :class="
-            index === i && play === true
-              ? 'bg-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.2)]'
-              : ''
-          "
+          :class="index === i && 'play'"
           @click="ChangeSong(i)"
         >
           <div class="w-11/12 h-16 flex justify-between items-center">
             <div>
-              <p
-                class="name text-lg font-bold"
-                :class="
-                  index === i && play === true
-                    ? 'text-black'
-                    : 'text-[rgb(140,140,140)]'
-                "
-              >
+              <p class="name text-lg font-bold text-[rgb(140,140,140)]">
                 {{ music.name }}
               </p>
               <p class="text-sm text-[rgb(140,140,140)]">
@@ -63,10 +52,7 @@
               class="h-16 cursor-pointer"
             />
           </div>
-          <hr
-            v-if="!(index === i && play === true)"
-            class="w-11/12 border-1/2 border-[rgba(140,140,140,0.5)]"
-          />
+          <hr class="w-11/12 border-1/2 border-[rgba(140,140,140,0.5)]" />
         </div>
       </div>
     </div>
@@ -86,32 +72,18 @@ export default {
     setIndex: Function,
     setPlay: Function,
   },
-  mounted() {
-
-  },
+  mounted() {},
   watch: {},
   methods: {
     //換歌
-    ChangeSong(index) {
-      const audio = document.querySelector("audio");
-      const src = audio.src
-        .split("/mp3/")[1]
-        .split(".mp3")[0]
-        .replace(/%20/g, " ");
-      const nextsrc = this.musicArr[index].src
-        .split("/mp3/")[1]
-        .split(".mp3")[0];
-      if (this.play && src === nextsrc) {
-        this.setPlay(false);
-      } else {
-        this.setPlay(true);
-      }
-      this.setIndex(index);
+    ChangeSong(i) {
+      if (i === this.index) this.setPlay(!this.play);
+      else this.setIndex(i);
     },
   },
 };
 </script>
-<style scoped>
+<style lang='postcss' scoped>
 .listcss {
   background: rgb(255, 255, 255);
   background: linear-gradient(
@@ -120,5 +92,16 @@ export default {
     rgba(255, 255, 255, 0.8) 15%,
     rgba(255, 255, 255, 0.8) 100%
   );
+}
+.play {
+  @apply bg-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.2)];
+}
+
+.play > hr {
+  @apply hidden;
+}
+
+.play > div > div > p {
+  @apply text-black;
 }
 </style>

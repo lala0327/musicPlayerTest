@@ -15,14 +15,14 @@ export default defineConfig(({ command, mode }) => {
         base: base,
         srcDir: "src",
         filename: "sw.js",
-        includeAssets: ["/favicon.ico"],
+        includeAssets: ["/musicIcon.ico"],
         strategies: "injectManifest",
         injectManifest: {
           globPatterns: ['**/*.{js,css,html,png}'],
         },
         manifest: {
-          name: "PWA_Vite_Tailwind",
-          short_name: "PWA模板",
+          name: "PWA Test Music Player",
+          short_name: "Music Player",
           theme_color: "#ffffff",
           start_url: base,
           display: "standalone",
