@@ -34,7 +34,7 @@
               ? 'bg-white drop-shadow-[0_5px_5px_rgba(0,0,0,0.2)]'
               : ''
           "
-          @click="ChangeSong('+n', i)"
+          @click="ChangeSong(i)"
         >
           <div class="w-11/12 h-16 flex justify-between items-center">
             <div>
@@ -75,12 +75,39 @@
 <script>
 export default {
   name: "List",
+  data() {
+    return {};
+  },
   props: {
     index: Number,
     play: Boolean,
     musicArr: Array,
     closelist: Function,
-    ChangeSong: Function,
+    setIndex: Function,
+    setPlay: Function,
+  },
+  mounted() {
+
+  },
+  watch: {},
+  methods: {
+    //換歌
+    ChangeSong(index) {
+      const audio = document.querySelector("audio");
+      const src = audio.src
+        .split("/mp3/")[1]
+        .split(".mp3")[0]
+        .replace(/%20/g, " ");
+      const nextsrc = this.musicArr[index].src
+        .split("/mp3/")[1]
+        .split(".mp3")[0];
+      if (this.play && src === nextsrc) {
+        this.setPlay(false);
+      } else {
+        this.setPlay(true);
+      }
+      this.setIndex(index);
+    },
   },
 };
 </script>

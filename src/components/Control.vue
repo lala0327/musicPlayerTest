@@ -56,12 +56,12 @@
         class="timeline w-10/12 my-3 cursor-pointer"
         min="0"
         max="100"
-        value="0"
+        :value="0"
         @change="changeTrack"
       />
       <div class="w-10/12 flex justify-between items-center">
-        <div id="start">00:00</div>
-        <div id="end">00:00</div>
+        <div>{{ timeToMinute(currentTime) }}</div>
+        <div>{{ timeToMinute(duration) }}</div>
       </div>
       <!-- 播放控制 -->
       <div class="control w-10/12 flex justify-evenly items-center">
@@ -97,41 +97,67 @@
 export default {
   name: "Control",
   data() {
-    return {};
+    return {
+      currentTime: 0,
+      duration: 0,
+      repeat: 0,
+    };
   },
   inheritAttrs: false,
   props: {
-    musicArr: Array,
     index: Number,
     play: Boolean,
     shuffle: Boolean,
-    repeat: Number,
+    musicArr: Array,
     openlist: Function,
     ChangePlay: Function,
     ChangeShuffle: Function,
-    ChangeRepeat: Function,
-    ChangeSong: Function,
-    end: Function,
+    setIndex: Function,
+    setRepeat: Function,
+    setPlay: Function,
+    repeatPlay: Function,
   },
+  watch: {},
+
+  mounted() {},
   methods: {
+    //換歌
+    ChangeSong(str, index) {
+      if (str === "+1") {
+        index += 1;
+        if (index === this.musicArr.length) {
+          index = 0;
+        }
+      } else if (str === "-1") {
+        if (index === 0) {
+          index = this.musicArr.length - 1;
+        } else {
+          index -= 1;
+        }
+      }
+      this.setIndex(index);
+    },
+    ChangeRepeat() {
+      this.repeat += 1;
+      if (this.repeat === 3) {
+        this.repeat = 0;
+      }
+      this.setRepeat(this.repeat);
+    },
     canplay() {
       //預設音樂時長
       const audio = document.querySelector("audio");
-      const start = document.getElementById("start");
-      const end = document.getElementById("end");
-      start.innerHTML = this.timeToMinute(audio.currentTime);
-      end.innerHTML = this.timeToMinute(audio.duration);
+      this.currentTime = audio.currentTime;
+      this.duration = audio.duration;
     },
     changeTimelinePosition() {
       const audio = document.querySelector("audio");
       const timeline = document.querySelector(".timeline");
       // 百分比計算音樂的進度
-      const percentagePosition = (100 * audio.currentTime) / audio.duration;
+      const percentagePosition = (100 * audio.currentTime) / this.duration;
       timeline.style.backgroundSize = `${percentagePosition}% 100%`;
       timeline.value = percentagePosition;
-      //變動歌曲時間文字
-      const start = document.getElementById("start");
-      start.innerHTML = this.timeToMinute(audio.currentTime);
+      this.currentTime = audio.currentTime;
     },
     timeToMinute(times) {
       var s = parseInt(parseInt(times) / 60);
@@ -142,11 +168,36 @@ export default {
       var length = "0" + s + ":" + m;
       return length;
     },
-    //更改事件
+    end() {
+      const audio = document.querySelector("audio");
+      if (this.repeat === 0) {
+        this.setPlay(false);
+      } else if (this.repeat === 1) {
+        this.repeatPlay();
+        this.setPlay(true);
+      } else {
+        if (this.shuffle === true) {
+          var arr = [];
+          for (let i = 0; i <= this.musicArr.length - 1; i++) {
+            arr.push(i);
+          }
+          arr.splice(this.index, 1);
+          const arrIndex = Math.floor(Math.random() * arr.length);
+          this.setIndex(arr[arrIndex]);
+        } else {
+          this.index += 1;
+          if (this.index === this.musicArr.length) {
+            this.index = 0;
+          }
+          this.setIndex(this.index);
+        }
+      }
+    },
+    //拖移事件
     changeTrack() {
       const audio = document.querySelector("audio");
       const timeline = document.querySelector(".timeline");
-      const time = (timeline.value * audio.duration) / 100;
+      const time = (timeline.value * this.duration) / 100;
       audio.currentTime = time;
     },
   },
