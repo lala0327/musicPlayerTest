@@ -1,0 +1,74 @@
+[
+    {
+        "name": "Drawing The Universe",
+        "singer": "MAKTUB",
+        "src": "./mp3/Drawing The Universe.mp3",
+        "png": "./img/flower.png"
+    },
+    {
+        "name": "One in a Million",
+        "singer": "GENERATIONS",
+        "src": "./mp3/One in a Million.mp3",
+        "png": "./img/summer.png"
+    },
+    {
+        "name": "Knocking Knocking",
+        "singer": "THE RAMPAGE",
+        "src": "./mp3/Knocking Knocking.mp3",
+        "png": "./img/black.jpg"
+    },
+    {
+        "name": "Drawing The Universe1",
+        "singer": "MAKTUB",
+        "src": "./mp3/Drawing The Universe1.mp3",
+        "png": "./img/flower.png"
+    },
+    {
+        "name": "One in a Million1",
+        "singer": "GENERATIONS",
+        "src": "./mp3/One in a Million1.mp3",
+        "png": "./img/summer.png"
+    },
+    {
+        "name": "Knocking Knocking1",
+        "singer": "THE RAMPAGE",
+        "src": "./mp3/Knocking Knocking1.mp3",
+        "png": "./img/black.jpg"
+    },
+    {
+        "name": "Drawing The Universe2",
+        "singer": "MAKTUB",
+        "src": "./mp3/Drawing The Universe2.mp3",
+        "png": "./img/flower.png"
+    },
+    {
+        "name": "One in a Million2",
+        "singer": "GENERATIONS",
+        "src": "./mp3/One in a Million2.mp3",
+        "png": "./img/summer.png"
+    },
+    {
+        "name": "Knocking Knocking2",
+        "singer": "THE RAMPAGE",
+        "src": "./mp3/Knocking Knocking2.mp3",
+        "png": "./img/black.jpg"
+    },
+    {
+        "name": "Drawing The Universe3",
+        "singer": "MAKTUB",
+        "src": "./mp3/Drawing The Universe3.mp3",
+        "png": "./img/flower.png"
+    },
+    {
+        "name": "One in a Million3",
+        "singer": "GENERATIONS",
+        "src": "./mp3/One in a Million3.mp3",
+        "png": "./img/summer.png"
+    },
+    {
+        "name": "Knocking Knocking3",
+        "singer": "THE RAMPAGE",
+        "src": "./mp3/Knocking Knocking3.mp3",
+        "png": "./img/black.jpg"
+    }
+]
