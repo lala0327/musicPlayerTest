@@ -1,5 +1,4 @@
 <template>
-  <audio id="test" controls class="hidden" />
   <audio
     controls
     :oncanplay="canplay"
@@ -102,7 +101,6 @@ export default {
       currentTime: 0,
       duration: 0,
       repeat: 0,
-      a: 0,
     };
   },
   inheritAttrs: false,
@@ -119,37 +117,10 @@ export default {
     setPlay: Function,
     repeatPlay: Function,
   },
-  watch: {
-    musicArr: function () {
-      const myVid = document.getElementById("test");
-      myVid.volume = 0;
-      for (let i = 0; i < this.musicArr.length; i++) {
-        myVid.src = this.musicArr[i].src;
-      }
-    },
-  },
+  watch: {},
 
-  mounted() {
-    // if (this.musicArr) {
-    //   for (let i = 0; i <= this.musicArr.length; i++) {
-    //     myVid.src = this.musicArr[i].src;
-    //     myVid.play();
-    //   }
-    // }
-  },
+  mounted() {},
   methods: {
-    // aa(){
-    // const myVid = document.getElementById("test");
-    // myVid.src = this.musicArr[this.a].src;
-    //    myVid.play();},
-    // aaa() {
-    //   const myVid = document.getElementById("test");
-    //   if (this.a <= this.musicArr.length) {
-    //     this.a += 1;
-    //     myVid.src = this.musicArr[this.a].src;
-
-    //   }
-    // },
     //換歌
     ChangeSong(str, index) {
       if (str === "+1") {

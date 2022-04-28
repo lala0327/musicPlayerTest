@@ -1,6 +1,6 @@
 <template>
+  <ReloadPWA class="absolute top-0 z-10" />
   <router-view />
-  <ReloadPWA />
 </template>
 
 <script>
