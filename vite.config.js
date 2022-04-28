@@ -18,7 +18,7 @@ export default defineConfig(({ command, mode }) => {
         includeAssets: ["/musicIcon.ico"],
         strategies: "injectManifest",
         injectManifest: {
-          globPatterns: ['**/*.{js,css,html,png}'],
+          globPatterns: ['**/*.{js,css,html,png,svg,mp3}'],
         },
         manifest: {
           name: "PWA Test Music Player",

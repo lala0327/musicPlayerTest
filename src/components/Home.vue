@@ -18,6 +18,7 @@
           class="
             w-full
             h-full
+            relative
             border-white border-[10px]
             drop-shadow-xl
             overflow-hidden
